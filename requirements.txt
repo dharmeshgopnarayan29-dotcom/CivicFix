@@ -1,0 +1,5 @@
+# Python libraries need to install to make your project run.
+
+django
+django-cors-headers
+Pillow          # specifically to handle the ImageField in your Issue model
