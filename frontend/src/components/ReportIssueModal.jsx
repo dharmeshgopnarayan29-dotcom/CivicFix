@@ -88,20 +88,20 @@ const ReportIssueModal = ({ isOpen, onClose, onSubmit }) => {
                     <h2>Report a New Issue</h2>
                     <button className="modal-close" onClick={onClose}><X size={20} /></button>
                 </div>
-                <form onSubmit={handleSubmit}>
-                    <div className="modal-body">
-                        <div className="form-group">
-                            <label>Issue Title</label>
-                            <input className="input-field" placeholder="e.g. Large Pothole on Main Street" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required />
+                <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+                    <div className="modal-body flex flex-col gap-4">
+                        <div className="form-group !mb-0">
+                            <label className="text-text-white font-semibold mb-2">Issue Title</label>
+                            <input className="input-field bg-[rgba(20,10,35,0.4)]" placeholder="e.g. Large Pothole on Main Street" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} required />
                         </div>
-                        <div className="form-group">
-                            <label>Description</label>
-                            <textarea className="textarea-field" rows="3" placeholder="Describe the issue in detail..." value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} required />
+                        <div className="form-group !mb-0">
+                            <label className="text-text-white font-semibold mb-2">Description</label>
+                            <textarea className="textarea-field bg-[rgba(20,10,35,0.4)] resize-none" rows="3" placeholder="Describe the issue in detail..." value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} required />
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="form-group">
-                                <label>Category</label>
-                                <select className="select-field" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})}>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="form-group !mb-0">
+                                <label className="text-text-white font-semibold mb-2">Category</label>
+                                <select className="select-field bg-[rgba(20,10,35,0.4)]" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})}>
                                     <option value="roads">Roads</option>
                                     <option value="sanitation">Sanitation</option>
                                     <option value="water">Water</option>
@@ -109,20 +109,26 @@ const ReportIssueModal = ({ isOpen, onClose, onSubmit }) => {
                                     <option value="other">Other</option>
                                 </select>
                             </div>
-                            <div className="form-group">
-                                <label>Photo (optional)</label>
-                                <input type="file" className="input-field p-2" accept="image/*" onChange={e => setPhoto(e.target.files[0])} />
+                            <div className="form-group !mb-0">
+                                <label className="text-text-white font-semibold mb-2">Photo (optional)</label>
+                                <div className="relative w-full">
+                                    <input type="file" id="photo-upload" className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*" onChange={e => setPhoto(e.target.files[0])} />
+                                    <div className="flex items-center gap-2 w-full py-2.5 px-3.5 border border-white/15 rounded-custom-sm text-[0.9rem] text-text-white-soft bg-[rgba(20,10,35,0.4)] transition-all duration-200 hover:bg-[rgba(30,20,50,0.6)] hover:border-accent-to/50">
+                                        <Camera size={18} className="text-accent-to" />
+                                        <span className="truncate">{photo ? photo.name : 'Upload an image...'}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className="form-group">
-                            <div className="flex justify-between items-center mb-2">
-                                <label className="!m-0">Pick Location</label>
-                                <button type="button" onClick={handleGetLocation} className="btn-secondary btn-sm">
+                        <div className="form-group !mb-0 shrink-0">
+                            <div className="flex justify-between items-center mb-3">
+                                <label className="text-text-white font-semibold !mb-0">Pick Location</label>
+                                <button type="button" onClick={handleGetLocation} className="flex items-center gap-1.5 py-1.5 px-3 text-[0.8rem] font-bold rounded-lg border-none bg-blue-500/20 text-blue-300 cursor-pointer transition-all duration-200 hover:bg-blue-500/30">
                                     <MapPin size={14} /> Use My Location
                                 </button>
                             </div>
-                            <div className="h-[200px] rounded-custom-sm overflow-hidden border border-white/15">
-                                <MapContainer center={mapCenter} zoom={13} className="h-full">
+                            <div className="h-[180px] rounded-[16px] overflow-hidden border border-white/20 shadow-[inset_0_4px_20px_rgba(0,0,0,0.3)]">
+                                <MapContainer center={mapCenter} zoom={13} className="h-full w-full z-[1]">
                                     <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
                                     <MapUpdater mapCenter={mapCenter} />
                                     <LocationPicker position={position} setPosition={setPosition} />

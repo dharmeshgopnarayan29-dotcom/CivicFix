@@ -408,28 +408,42 @@
 
   /* === MODAL === */
   .modal-overlay {
-    @apply fixed inset-0 bg-black/60 backdrop-blur-[8px] flex items-center justify-center z-[2000] animate-[fadeIn_0.2s_ease] p-4;
+    @apply fixed inset-0 bg-[rgba(10,5,20,0.7)] backdrop-blur-[12px] flex items-center justify-center z-[2000] animate-[fadeIn_0.2s_ease] p-4;
   }
   .modal-content {
-    @apply bg-[rgba(40,25,70,0.92)] backdrop-blur-[24px] border border-white/15 rounded-custom w-full max-w-[560px] max-h-[90vh] overflow-y-auto shadow-float animate-[scaleIn_0.2s_ease];
+    @apply bg-[rgba(35,20,60,0.95)] backdrop-blur-[30px] border border-white/20 rounded-[28px] w-full max-w-[640px] max-h-[90vh] flex flex-col overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.15)] animate-[scaleIn_0.2s_ease];
   }
   .modal-header {
-    @apply flex justify-between items-center py-5 px-6 border-b border-white/10;
+    @apply flex justify-between items-center py-5 px-7 border-b border-white/10 bg-[rgba(20,10,35,0.4)] shrink-0;
   }
   .modal-header h2 {
-    @apply text-[1.15rem] font-semibold text-text-white;
+    @apply text-[1.25rem] font-bold text-text-white tracking-tight;
   }
   .modal-close {
-    @apply bg-none border-none cursor-pointer p-1 text-text-white-muted rounded-lg transition-all duration-150;
+    @apply bg-white/5 border border-white/10 cursor-pointer w-[34px] h-[34px] flex items-center justify-center text-text-white-muted rounded-full transition-all duration-300;
   }
   .modal-close:hover {
-    @apply bg-white/10 text-text-white;
+    @apply bg-red-500/90 border-red-400 text-white shadow-[0_0_15px_rgba(239,68,68,0.5)] scale-110 rotate-90;
   }
   .modal-body {
-    @apply p-6;
+    @apply p-7 overflow-y-auto overflow-x-hidden flex-1 custom-scrollbar;
   }
   .modal-footer {
-    @apply py-4 px-6 border-t border-white/10 flex gap-3 justify-end;
+    @apply py-5 px-7 border-t border-white/10 bg-[rgba(20,10,35,0.4)] flex gap-3 justify-end shrink-0;
+  }
+  
+  /* Custom Scrollbar for Modal */
+  .custom-scrollbar::-webkit-scrollbar {
+    @apply w-1.5;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/20 rounded-full border-2 border-transparent bg-clip-padding;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-white/30;
   }
 
   /* === TABLE === */
