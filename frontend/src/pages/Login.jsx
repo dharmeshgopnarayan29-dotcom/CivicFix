@@ -24,110 +24,66 @@ const Login = () => {
     };
 
     return (
-        <div style={{ display: 'flex', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }}>
+        <div className="flex min-h-screen font-inherit">
             {/* LEFT: City Image Panel */}
-            <div style={{
-                flex: 1,
-                position: 'relative',
-                backgroundImage: 'url(/Background.png)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-end',
-                padding: '3rem',
-                overflow: 'hidden',
-                minHeight: '100vh',
-            }}>
+            <div className="flex-1 relative bg-[url('/Background.png')] bg-cover bg-center bg-no-repeat flex flex-col justify-end p-12 overflow-hidden min-h-screen">
                 {/* Gradient overlay */}
-                <div style={{
-                    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                    background: 'linear-gradient(to bottom, rgba(80,60,180,0.15) 0%, rgba(40,20,80,0.55) 100%)',
-                    zIndex: 1,
-                }} />
+                <div className="absolute inset-0 bg-gradient-to-b from-[rgba(80,60,180,0.15)] to-[rgba(40,20,80,0.55)] z-[1]" />
                 {/* Branding */}
-                <div style={{ position: 'relative', zIndex: 2 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem' }}>
-                        <div style={{ width: 40, height: 40, borderRadius: '12px', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="relative z-[2]">
+                    <div className="flex items-center gap-2.5 mb-4">
+                        <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-[10px] flex items-center justify-center">
                             <MapPin size={22} color="white" />
                         </div>
-                        <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'white', letterSpacing: '-0.5px' }}>CivicFix</span>
+                        <span className="text-[1.5rem] font-extrabold text-white tracking-[-0.5px]">CivicFix</span>
                     </div>
-                    <h2 style={{ fontSize: '2rem', fontWeight: 700, color: 'white', marginBottom: '0.75rem', lineHeight: 1.2 }}>
+                    <h2 className="text-[2rem] font-bold text-white mb-3 leading-[1.2]">
                         City Explorer<br />& Reporter
                     </h2>
-                    <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '1rem', maxWidth: '380px', lineHeight: 1.6 }}>
+                    <p className="text-white/75 text-base max-w-[380px] leading-relaxed">
                         Report city issues, track complaints, and improve your community together.
                     </p>
                 </div>
             </div>
 
             {/* RIGHT: Glass Form Panel */}
-            <div style={{
-                width: '480px',
-                flexShrink: 0,
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 60%, #8E54E9 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '3rem 2rem',
-                position: 'relative',
-            }}>
+            <div className="w-[480px] shrink-0 bg-gradient-to-br from-[#667eea] via-[#764ba2] to-[#8E54E9] flex items-center justify-center py-12 px-8 relative">
                 {/* Glass card */}
-                <div style={{
-                    width: '100%',
-                    maxWidth: '380px',
-                    background: 'rgba(255,255,255,0.1)',
-                    backdropFilter: 'blur(24px)',
-                    WebkitBackdropFilter: 'blur(24px)',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    borderRadius: '28px',
-                    padding: '2.5rem',
-                    boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
-                }}>
-                    <h2 style={{ fontSize: '1.6rem', fontWeight: 700, textAlign: 'center', marginBottom: '0.4rem', color: 'white' }}>
+                <div className="w-full max-w-[380px] bg-white/10 backdrop-blur-[24px] border border-white/20 rounded-[28px] p-10 shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
+                    <h2 className="text-[1.6rem] font-bold text-center mb-1.5 text-white">
                         Welcome Back
                     </h2>
-                    <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', marginBottom: '2rem' }}>
+                    <p className="text-center text-white/60 text-[0.9rem] mb-8">
                         Sign in to your CivicFix account
                     </p>
 
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                         <div>
-                            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, color: 'rgba(255,255,255,0.7)', marginBottom: '6px' }}>Email Address</label>
+                            <label className="block text-[0.8rem] font-medium text-white/70 mb-1.5">Email Address</label>
                             <input
-                                style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '14px', color: 'white', fontSize: '0.9rem', fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }}
+                                className="w-full py-3 px-4 bg-white/10 border border-white/15 rounded-xl text-white text-[0.9rem] font-inherit outline-none box-border"
                                 type="email" placeholder="you@example.com"
                                 value={formData.email}
                                 onChange={(e) => setFormData({...formData, email: e.target.value})} required
                             />
                         </div>
                         <div>
-                            <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 500, color: 'rgba(255,255,255,0.7)', marginBottom: '6px' }}>Password</label>
+                            <label className="block text-[0.8rem] font-medium text-white/70 mb-1.5">Password</label>
                             <input
-                                style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '14px', color: 'white', fontSize: '0.9rem', fontFamily: 'inherit', outline: 'none', boxSizing: 'border-box' }}
+                                className="w-full py-3 px-4 bg-white/10 border border-white/15 rounded-xl text-white text-[0.9rem] font-inherit outline-none box-border"
                                 type="password" placeholder="••••••••"
                                 value={formData.password}
                                 onChange={(e) => setFormData({...formData, password: e.target.value})} required
                             />
                         </div>
 
-                        <button type="submit" disabled={loading} style={{
-                            marginTop: '0.5rem', width: '100%', padding: '13px',
-                            background: 'linear-gradient(135deg, #194342, #DAE8B3)',
-                            color: 'white', border: 'none', borderRadius: '14px',
-                            fontWeight: 700, fontSize: '1rem', cursor: 'pointer',
-                            fontFamily: 'inherit', transition: 'all 0.3s ease',
-                            boxShadow: '0 4px 20px rgba(25,67,66,0.4)',
-                            opacity: loading ? 0.7 : 1,
-                        }}>
+                        <button type="submit" disabled={loading} className={`mt-2 w-full py-3 bg-gradient-to-br from-[#194342] to-[#DAE8B3] text-white border-none rounded-xl font-bold text-base cursor-pointer font-inherit transition-all duration-300 shadow-[0_4px_20px_rgba(25,67,66,0.4)] ${loading ? 'opacity-70' : 'opacity-100'}`}>
                             {loading ? 'Signing in...' : 'Sign In'}
                         </button>
 
-                        <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.6)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+                        <p className="text-center text-white/60 text-[0.875rem] mt-2">
                             Don't have an account?{' '}
-                            <Link to="/signup" style={{ color: '#DAE8B3', textDecoration: 'none', fontWeight: 600 }}>Sign up</Link>
+                            <Link to="/signup" className="text-[#DAE8B3] no-underline font-semibold">Sign up</Link>
                         </p>
                     </form>
                 </div>

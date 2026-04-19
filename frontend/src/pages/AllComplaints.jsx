@@ -38,12 +38,12 @@ const AllComplaints = () => {
                 </div>
 
                 {/* Search + Filters */}
-                <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                    <div style={{ position: 'relative', flex: 1, minWidth: '200px' }}>
-                        <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                        <input className="input-field" placeholder="Search complaints..." value={search} onChange={e => setSearch(e.target.value)} style={{ paddingLeft: '36px' }} />
+                <div className="flex gap-4 mb-6 flex-wrap items-center">
+                    <div className="relative flex-1 min-w-[200px]">
+                        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-white-muted" />
+                        <input className="input-field pl-9" placeholder="Search complaints..." value={search} onChange={e => setSearch(e.target.value)} />
                     </div>
-                    <div className="tabs" style={{ marginBottom: 0 }}>
+                    <div className="tabs !mb-0">
                         {['all', 'pending', 'verified', 'in_progress', 'resolved', 'rejected'].map(s => (
                             <button key={s} className={`tab-btn ${filter === s ? 'active' : ''}`} onClick={() => setFilter(s)}>
                                 {s === 'all' ? 'All' : s.replace('_', ' ')}
@@ -66,19 +66,19 @@ const AllComplaints = () => {
                         </thead>
                         <tbody>
                             {filtered.length === 0 ? (
-                                <tr><td colSpan="5" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>No complaints found</td></tr>
+                                <tr><td colSpan="5" className="text-center p-8 text-text-white-muted">No complaints found</td></tr>
                             ) : (
                                 filtered.map(iss => (
                                     <tr key={iss.id}>
                                         <td>
-                                            <div style={{ fontWeight: 500 }}>{iss.title}</div>
-                                            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>{iss.description?.substring(0, 60)}...</div>
+                                            <div className="font-medium">{iss.title}</div>
+                                            <div className="text-[0.8rem] text-text-white-muted mt-0.5">{iss.description?.substring(0, 60)}...</div>
                                         </td>
                                         <td>{iss.reporter_name || 'Unknown'}</td>
-                                        <td style={{ textTransform: 'capitalize' }}>{iss.category}</td>
+                                        <td className="capitalize">{iss.category}</td>
                                         <td><span className={`badge ${iss.status}`}>{iss.status.replace('_', ' ')}</span></td>
                                         <td>
-                                            <select className="select-field" style={{ width: '130px', padding: '6px 10px', fontSize: '0.8rem' }} value={iss.status} onChange={e => updateStatus(iss.id, e.target.value)}>
+                                            <select className="select-field w-[130px] py-1.5 px-2.5 text-[0.8rem]" value={iss.status} onChange={e => updateStatus(iss.id, e.target.value)}>
                                                 <option value="pending">Pending</option>
                                                 <option value="verified">Verified</option>
                                                 <option value="in_progress">In Progress</option>

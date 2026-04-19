@@ -61,18 +61,18 @@ const Navbar = () => {
 
                 {/* Profile + Mobile */}
                 <div className="nav-right">
-                    <div style={{ position: 'relative' }}>
+                    <div className="relative">
                         <button className="profile-btn" onClick={() => setProfileOpen(!profileOpen)}>
                             <div className={`avatar ${isAdmin ? 'admin-avatar' : ''}`}>
                                 {(user?.email || 'U').charAt(0).toUpperCase()}
                             </div>
-                            <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--text-medium)' }}>Profile</span>
-                            <ChevronDown size={14} style={{ color: 'var(--text-muted)', transition: 'transform 0.2s', transform: profileOpen ? 'rotate(180deg)' : 'none' }} />
+                            <span className="text-[0.85rem] font-medium text-text-white-muted">Profile</span>
+                            <ChevronDown size={14} className={`text-text-white-muted transition-transform duration-200 ${profileOpen ? 'rotate-180' : ''}`} />
                         </button>
 
                         {profileOpen && (
                             <div className="profile-dropdown">
-                                <div style={{ padding: '8px 14px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                                <div className="py-2 px-[14px] text-[0.8rem] text-text-white-muted">
                                     {user?.email}
                                 </div>
                                 <div className="divider" />
@@ -103,7 +103,7 @@ const Navbar = () => {
                         <span>{item.label}</span>
                     </NavLink>
                 ))}
-                <button className="nav-link" onClick={handleLogout} style={{ color: 'var(--danger)' }}>
+                <button className="nav-link text-red-500" onClick={handleLogout}>
                     Sign Out
                 </button>
             </div>

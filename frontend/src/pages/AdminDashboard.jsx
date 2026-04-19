@@ -63,14 +63,14 @@ const AdminDashboard = () => {
         <div className="dashboard-bg">
             <Navbar />
 
-            <div className="container-wide admin-layout" style={{ paddingTop: '100px' }}>
-                <div className="page-header" style={{ marginBottom: 0 }}>
+            <div className="container-wide admin-layout pt-[100px]">
+                <div className="page-header !mb-0">
                     <h1>Admin Dashboard</h1>
                     <span className="role-badge">Admin</span>
                 </div>
 
                 {/* 1. STATS SECTION */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mb-6">
                     {stats.map((stat, index) => (
                         <div key={index} className="stat-card" style={{ animationDelay: `${index * 0.05}s` }}>
                             {stat.trend && (
@@ -93,15 +93,14 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* 2. QUICK ACTION FILTER PANEL */}
-                <div className="action-panel" style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.5rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+                <div className="action-panel flex flex-row items-center justify-between py-4 px-6 mb-8 flex-wrap">
+                    <div className="flex items-center gap-5 flex-wrap">
                         <div>
-                            <h3 style={{ fontSize: '1.1rem', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}><Filter size={18} /> Filter Issues</h3>
-                            <p style={{ fontSize: '0.85rem', color: 'var(--text-white-soft)', margin: '4px 0 0 0' }}>Select a status to filter map and feed</p>
+                            <h3 className="text-[1.1rem] !m-0 flex items-center gap-2"><Filter size={18} /> Filter Issues</h3>
+                            <p className="text-[0.85rem] text-text-white-soft mt-1 mb-0 mx-0">Select a status to filter map and feed</p>
                         </div>
                         <select 
-                            className="select-field" 
-                            style={{ width: '220px', padding: '10px 14px', margin: 0, fontSize: '0.9rem' }}
+                            className="select-field w-[220px] py-2.5 px-3.5 !m-0 text-[0.9rem]" 
                             value={filter}
                             onChange={(e) => setFilter(e.target.value)}
                         >
@@ -115,11 +114,11 @@ const AdminDashboard = () => {
                     </div>
 
                     {filter !== 'all' && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                            <div style={{ fontSize: '0.9rem', color: 'var(--text-white)' }}>
-                                Showing <strong style={{ color: 'var(--accent-to)', fontSize: '1.1rem' }}>{displayedIssues.length}</strong> filtered results
+                        <div className="flex items-center gap-4">
+                            <div className="text-[0.9rem] text-text-white">
+                                Showing <strong className="text-accent-to text-[1.1rem]">{displayedIssues.length}</strong> filtered results
                             </div>
-                            <button className="btn-secondary btn-sm" style={{ padding: '6px 12px' }} onClick={() => setFilter('all')}>
+                            <button className="btn-secondary btn-sm py-1.5 px-3" onClick={() => setFilter('all')}>
                                 Clear Filter
                             </button>
                         </div>
@@ -129,7 +128,7 @@ const AdminDashboard = () => {
                 {/* Middle Row: Map Section */}
                 <div className="admin-map-panel">
                     <div className="admin-map-container">
-                        <MapContainer center={mapCenter} zoom={12} style={{ height: '100%', width: '100%', zIndex: 1 }}>
+                        <MapContainer center={mapCenter} zoom={12} className="h-full w-full z-[1]">
                             <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
                             {displayedIssues.map(iss => (
                                 <Marker 
@@ -146,38 +145,38 @@ const AdminDashboard = () => {
                     <div className="admin-issue-details">
                         {selectedIssue ? (
                             <>
-                                <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', fontWeight: 700 }}>{selectedIssue.title}</h3>
-                                <span className={`badge ${selectedIssue.status}`} style={{ alignSelf: 'flex-start' }}>{selectedIssue.status.replace('_', ' ')}</span>
+                                <h3 className="text-[1.2rem] mb-2 font-bold">{selectedIssue.title}</h3>
+                                <span className={`badge ${selectedIssue.status} self-start`}>{selectedIssue.status.replace('_', ' ')}</span>
                                 
-                                <div style={{ fontSize: '0.9rem', color: 'var(--text-white-soft)', marginTop: '1rem' }}>
-                                    <strong style={{ color: 'var(--text-white)' }}>Reported By:</strong> {selectedIssue.reporter_name || 'Anonymous'}<br />
-                                    <strong style={{ color: 'var(--text-white)' }}>Category:</strong> {selectedIssue.category}<br />
-                                    <strong style={{ color: 'var(--text-white)' }}>Location:</strong> {selectedIssue.lat}, {selectedIssue.lng}
+                                <div className="text-[0.9rem] text-text-white-soft mt-4">
+                                    <strong className="text-text-white">Reported By:</strong> {selectedIssue.reporter_name || 'Anonymous'}<br />
+                                    <strong className="text-text-white">Category:</strong> {selectedIssue.category}<br />
+                                    <strong className="text-text-white">Location:</strong> {selectedIssue.lat}, {selectedIssue.lng}
                                 </div>
                                 
-                                <div style={{ fontSize: '0.95rem', lineHeight: '1.6', margin: '1rem 0', color: 'var(--text-white)' }}>
+                                <div className="text-[0.95rem] leading-[1.6] my-4 text-text-white">
                                     {selectedIssue.description}
                                 </div>
 
-                                <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <strong style={{ fontSize: '0.8rem', color: 'var(--text-white-muted)', letterSpacing: '1px' }}>ADMIN ACTIONS</strong>
+                                <div className="mt-auto flex flex-col gap-2">
+                                    <strong className="text-[0.8rem] text-text-white-muted tracking-[1px]">ADMIN ACTIONS</strong>
                                     {selectedIssue.status === 'pending' && (
-                                        <button className="btn-primary" style={{ padding: '10px', fontSize: '0.9rem', justifyContent: 'center' }} onClick={() => updateStatus(selectedIssue.id, 'verified')}>Approve Issue</button>
+                                        <button className="btn-primary p-2.5 text-[0.9rem] justify-center" onClick={() => updateStatus(selectedIssue.id, 'verified')}>Approve Issue</button>
                                     )}
                                     {selectedIssue.status === 'verified' && (
-                                        <button className="btn-outline" style={{ padding: '10px', fontSize: '0.9rem', justifyContent: 'center' }} onClick={() => updateStatus(selectedIssue.id, 'in_progress')}>Mark In Progress</button>
+                                        <button className="btn-outline p-2.5 text-[0.9rem] justify-center" onClick={() => updateStatus(selectedIssue.id, 'in_progress')}>Mark In Progress</button>
                                     )}
                                     {selectedIssue.status === 'in_progress' && (
-                                        <button className="btn-primary" style={{ padding: '10px', fontSize: '0.9rem', justifyContent: 'center', background: '#22c55e' }} onClick={() => updateStatus(selectedIssue.id, 'resolved')}>Mark Resolved</button>
+                                        <button className="btn-primary p-2.5 text-[0.9rem] justify-center !bg-green-500" onClick={() => updateStatus(selectedIssue.id, 'resolved')}>Mark Resolved</button>
                                     )}
-                                    <button className="btn-secondary" style={{ padding: '10px', fontSize: '0.9rem', justifyContent: 'center' }} onClick={() => setSelectedIssueId(null)}>Close Details</button>
+                                    <button className="btn-secondary p-2.5 text-[0.9rem] justify-center" onClick={() => setSelectedIssueId(null)}>Close Details</button>
                                 </div>
                             </>
                         ) : (
-                            <div className="empty-state" style={{ padding: '4rem 1rem' }}>
-                                <AlertTriangle size={36} style={{ opacity: 0.5, marginBottom: '1rem' }} />
+                            <div className="empty-state py-16 px-4">
+                                <AlertTriangle size={36} className="opacity-50 mb-4" />
                                 <h3>No Issue Selected</h3>
-                                <p style={{ color: 'var(--text-white-soft)' }}>Click on a map marker to view detailed information and manage the report.</p>
+                                <p className="text-text-white-soft">Click on a map marker to view detailed information and manage the report.</p>
                             </div>
                         )}
                     </div>

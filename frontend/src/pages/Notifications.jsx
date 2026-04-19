@@ -43,13 +43,13 @@ const Notifications = () => {
     return (
         <div className="dashboard-bg">
             <Navbar />
-            <div className="container" style={{ maxWidth: '720px' }}>
+            <div className="container max-w-[720px]">
                 <div className="page-header">
                     <h1>Notifications</h1>
                     <p className="subtitle">Stay updated on your reported issues</p>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                <div className="flex flex-col gap-3">
                     {issues.length === 0 ? (
                         <div className="empty-state">
                             <Bell size={48} />
@@ -58,16 +58,16 @@ const Notifications = () => {
                         </div>
                     ) : (
                         issues.map((issue, idx) => (
-                            <div key={issue.id} className={`notification-card ${issue.status !== 'resolved' ? 'unread' : ''}`} style={{ animationDelay: `${idx * 0.03}s`, animation: 'fadeInUp 0.3s ease forwards' }}>
+                            <div key={issue.id} className={`notification-card animate-[fadeInUp_0.3s_ease_forwards] ${issue.status !== 'resolved' ? 'unread' : ''}`} style={{ animationDelay: `${idx * 0.03}s` }}>
                                 {getNotificationIcon(issue.status)}
-                                <div style={{ flex: 1 }}>
-                                    <div style={{ fontWeight: 600, fontSize: '0.9rem', marginBottom: '4px' }}>
+                                <div className="flex-1">
+                                    <div className="font-semibold text-[0.9rem] mb-1">
                                         {issue.title}
                                     </div>
-                                    <div style={{ fontSize: '0.85rem', color: 'var(--text-light)' }}>
-                                        Status changed to <span className={`badge ${issue.status}`} style={{ marginLeft: '4px' }}>{issue.status.replace('_', ' ')}</span>
+                                    <div className="text-[0.85rem] text-text-white-soft">
+                                        Status changed to <span className={`badge ${issue.status} ml-1`}>{issue.status.replace('_', ' ')}</span>
                                     </div>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '6px' }}>
+                                    <div className="text-[0.75rem] text-text-white-muted mt-1.5">
                                         {getTimeAgo(issue.updated_at)}
                                     </div>
                                 </div>

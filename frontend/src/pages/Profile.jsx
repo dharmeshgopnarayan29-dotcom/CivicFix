@@ -16,7 +16,7 @@ const Profile = () => {
     return (
         <div className="dashboard-bg">
             <Navbar />
-            <div className="container" style={{ maxWidth: '600px' }}>
+            <div className="container max-w-[600px]">
                 <div className="page-header">
                     <h1>My Profile</h1>
                     <p className="subtitle">Manage your account settings</p>
@@ -26,29 +26,29 @@ const Profile = () => {
                     <div className="profile-avatar">
                         {(user?.email || 'U').charAt(0).toUpperCase()}
                     </div>
-                    <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '4px' }}>{user?.email}</h2>
-                    <span className={`badge ${user?.role === 'admin' ? 'verified' : 'pending'}`} style={{ marginBottom: '1.5rem' }}>
+                    <h2 className="text-[1.25rem] font-semibold mb-1">{user?.email}</h2>
+                    <span className={`badge ${user?.role === 'admin' ? 'verified' : 'pending'} mb-6`}>
                         {user?.role}
                     </span>
 
-                    <div style={{ textAlign: 'left', marginTop: '1.5rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '1rem 0', borderBottom: '1px solid rgba(255,255,255,0.15)' }}>
+                    <div className="text-left mt-6">
+                        <div className="flex items-center gap-3 py-4 border-b border-white/15">
                             <Mail size={20} color="var(--text-light)" />
                             <div>
-                                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Email</div>
-                                <div style={{ fontSize: '0.95rem', fontWeight: 500 }}>{user?.email}</div>
+                                <div className="text-[0.8rem] text-text-white-muted">Email</div>
+                                <div className="text-[0.95rem] font-medium">{user?.email}</div>
                             </div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '1rem 0', borderBottom: '1px solid rgba(255,255,255,0.15)' }}>
+                        <div className="flex items-center gap-3 py-4 border-b border-white/15">
                             <Shield size={20} color="var(--text-light)" />
                             <div>
-                                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Role</div>
-                                <div style={{ fontSize: '0.95rem', fontWeight: 500, textTransform: 'capitalize' }}>{user?.role}</div>
+                                <div className="text-[0.8rem] text-text-white-muted">Role</div>
+                                <div className="text-[0.95rem] font-medium capitalize">{user?.role}</div>
                             </div>
                         </div>
                     </div>
 
-                    <button className="btn-primary" onClick={handleLogout} style={{ marginTop: '2rem', width: '100%', background: 'var(--danger)' }}>
+                    <button className="btn-primary mt-8 w-full !bg-danger" onClick={handleLogout}>
                         <LogOut size={16} /> Sign Out
                     </button>
                 </div>

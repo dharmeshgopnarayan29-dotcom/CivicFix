@@ -76,12 +76,12 @@ const Analytics = () => {
     if (total > 0) {
         if (pendingCount > solved) {
             insights.push({ 
-                text: <>There are currently more pending issues (<strong style={{color: 'var(--text-white)'}}>{pendingCount}</strong>) than resolved ones (<strong style={{color: 'var(--text-white)'}}>{solved}</strong>).</>,
+                text: <>There are currently more pending issues (<strong className="text-text-white">{pendingCount}</strong>) than resolved ones (<strong className="text-text-white">{solved}</strong>).</>,
                 type: 'negative'
             });
         } else {
             insights.push({ 
-                text: <>Great job! More issues are resolved (<strong style={{color: 'var(--text-white)'}}>{solved}</strong>) than pending (<strong style={{color: 'var(--text-white)'}}>{pendingCount}</strong>).</>,
+                text: <>Great job! More issues are resolved (<strong className="text-text-white">{solved}</strong>) than pending (<strong className="text-text-white">{pendingCount}</strong>).</>,
                 type: 'positive'
             });
         }
@@ -90,19 +90,19 @@ const Analytics = () => {
             const top = categoryArray[0];
             const pct = Math.round((top.value / total) * 100);
             insights.push({ 
-                text: <><strong style={{color: 'var(--text-white)'}}>{top.name}</strong> complaints make up the highest proportion (<strong style={{color: 'var(--text-white)'}}>{pct}%</strong>) of all reports.</>,
+                text: <><strong className="text-text-white">{top.name}</strong> complaints make up the highest proportion (<strong className="text-text-white">{pct}%</strong>) of all reports.</>,
                 type: 'neutral'
             });
         }
         
         if (successRate >= 50) {
             insights.push({ 
-                text: <>The resolution success rate is solid at <strong style={{color: 'var(--text-white)'}}>{successRate}%</strong>.</>,
+                text: <>The resolution success rate is solid at <strong className="text-text-white">{successRate}%</strong>.</>,
                 type: 'positive'
             });
         } else {
             insights.push({ 
-                text: <>The success rate is at <strong style={{color: 'var(--text-white)'}}>{successRate}%</strong>. Need to prioritize resolving active issues.</>,
+                text: <>The success rate is at <strong className="text-text-white">{successRate}%</strong>. Need to prioritize resolving active issues.</>,
                 type: 'negative'
             });
         }
@@ -129,13 +129,13 @@ const Analytics = () => {
         <div className="dashboard-bg">
             <Navbar />
             <div className="container-wide">
-                <div className="page-header" style={{ marginBottom: '3rem' }}>
+                <div className="page-header mb-12">
                     <h1>Analytics Dashboard</h1>
                     <p className="subtitle">Data-driven insights for your city's performance</p>
                 </div>
 
                 {/* 1. OVERVIEW (STATS) */}
-                <div style={{ marginBottom: '60px' }}>
+                <div className="mb-[60px]">
                     <div className="section-label">Overview</div>
                     <div className="analytics-stats-grid">
                         {topStats.map((stat, index) => (
@@ -163,24 +163,24 @@ const Analytics = () => {
                 </div>
 
                 {/* 2. INSIGHTS */}
-                <div style={{ marginBottom: '60px' }}>
+                <div className="mb-[60px]">
                     <div className="insights-panel">
-                        <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '1.15rem', fontWeight: 700, marginBottom: '1.25rem' }}>
+                        <h3 className="flex items-center gap-2.5 text-[1.15rem] font-bold mb-5">
                             <Activity size={22} color="var(--info)" />
                             Key Insights
                         </h3>
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <ul className="list-none p-0 m-0 flex flex-col gap-3">
                             {insights.length > 0 ? insights.map((insight, idx) => (
-                                <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', color: 'var(--text-white-soft)', lineHeight: '1.6', fontSize: '0.95rem' }}>
-                                    <div style={{ marginTop: '2px', color: getInsightColor(insight.type), display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.05)', padding: '6px', borderRadius: '50%' }}>
+                                <li key={idx} className="flex items-start gap-3 text-text-white-soft leading-[1.6] text-[0.95rem]">
+                                    <div className="mt-0.5 flex items-center justify-center bg-white/5 p-1.5 rounded-full" style={{ color: getInsightColor(insight.type) }}>
                                         <Lightbulb size={16} />
                                     </div>
-                                    <div style={{ alignSelf: 'center' }}>
+                                    <div className="self-center">
                                         {insight.text}
                                     </div>
                                 </li>
                             )) : (
-                                <li style={{ color: 'var(--text-white-muted)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <li className="text-text-white-muted flex items-center gap-2">
                                     <Info size={16} /> Not enough data to generate insights yet.
                                 </li>
                             )}
@@ -189,14 +189,14 @@ const Analytics = () => {
                 </div>
 
                 {/* 3. TRENDS (CHARTS) */}
-                <div style={{ marginBottom: '60px' }}>
+                <div className="mb-[60px]">
                     <div className="section-label">Performance Trends</div>
                     <div className="chart-card">
                         <h3>Complaints Over Time</h3>
-                        <div style={{ height: 320, marginTop: '1.5rem' }}>
+                        <div className="h-[320px] mt-6">
                             {timeSeriesArray.length === 0 ? (
-                                <div className="empty-state" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                                    <Info size={32} color="var(--text-white-muted)" style={{ margin: '0 auto 12px' }} />
+                                <div className="empty-state h-full flex flex-col justify-center">
+                                    <Info size={32} color="var(--text-white-muted)" className="mx-auto mb-3" />
                                     <p>No complaints reported yet to generate this trend line.</p>
                                 </div>
                             ) : (
@@ -226,16 +226,16 @@ const Analytics = () => {
                 </div>
 
                 {/* 4. BREAKDOWN (CHARTS) */}
-                <div style={{ marginBottom: '60px' }}>
+                <div className="mb-[60px]">
                     <div className="section-label">Issue Breakdown</div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '1.5rem' }}>
+                    <div className="grid grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-6">
                         
                         {/* Bar Chart */}
                         <div className="chart-card">
                             <h3>Status Distribution</h3>
-                            <div style={{ height: 280, marginTop: '1.5rem' }}>
+                            <div className="h-[280px] mt-6">
                                 {statusArray.length === 0 ? (
-                                    <div className="empty-state" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                    <div className="empty-state h-full flex flex-col justify-center">
                                         <p>No status data available.</p>
                                     </div>
                                 ) : (
@@ -267,9 +267,9 @@ const Analytics = () => {
                         {/* Pie Chart */}
                         <div className="chart-card">
                             <h3>Complaints by Category</h3>
-                            <div style={{ height: 280, marginTop: '1.5rem' }}>
+                            <div className="h-[280px] mt-6">
                                 {categoryArray.length === 0 ? (
-                                    <div className="empty-state" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                    <div className="empty-state h-full flex flex-col justify-center">
                                         <p>No category data available.</p>
                                     </div>
                                 ) : (

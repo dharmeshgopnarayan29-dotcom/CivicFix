@@ -23,7 +23,7 @@ import Reports from './pages/Reports';
 const ProtectedRoute = ({ children, allowedRole }) => {
     const { user, loading } = useContext(AuthContext);
 
-    if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', fontWeight: 600 }}>Loading CivicFix...</div>;
+    if (loading) return <div className="flex justify-center items-center h-screen font-semibold text-text-white">Loading CivicFix...</div>;
     
     if (!user) return <Navigate to="/login" />;
     

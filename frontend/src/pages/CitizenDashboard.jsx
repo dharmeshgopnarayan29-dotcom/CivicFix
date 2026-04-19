@@ -67,56 +67,56 @@ const CitizenDashboard = () => {
                 {/* LEFT SIDEBAR: Profile & Personal Insights */}
                 <div className="left-sidebar">
                     {/* Keep Profile as Base */}
-                    <div style={{ padding: '2rem 1.5rem', background: 'rgba(255,255,255,0.03)', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.08)', textAlign: 'center', backdropFilter: 'blur(10px)' }}>
-                        <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent-from), var(--accent-to))', color: '#194342', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: 700, margin: '0 auto 1.25rem', boxShadow: '0 8px 20px rgba(0,0,0,0.15)' }}>
+                    <div className="py-8 px-6 bg-white/[0.03] rounded-custom border border-white/[0.08] text-center backdrop-blur-[10px]">
+                        <div className="w-[80px] h-[80px] rounded-full bg-gradient-to-br from-accent-from to-accent-to text-[#194342] flex items-center justify-center text-[2.5rem] font-bold mx-auto mb-5 shadow-[0_8px_20px_rgba(0,0,0,0.15)]">
                             {initial}
                         </div>
-                        <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-white)', margin: '0' }}>Hii {username}!</h3>
+                        <h3 className="text-[1.25rem] font-bold text-text-white m-0">Hii {username}!</h3>
                     </div>
 
                     {/* Smart Location Card */}
-                    <div style={{ padding: '1.25rem', background: 'rgba(255,255,255,0.06)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-white)', fontWeight: 700, fontSize: '0.95rem' }}>
+                    <div className="p-5 bg-white/5 rounded-[20px] border border-white/10 backdrop-blur-[10px] flex flex-col gap-1.5">
+                        <div className="flex items-center gap-2 text-text-white font-bold text-[0.95rem]">
                             <MapPin size={16} color="#86efac" /> Whitefield, Bangalore
                         </div>
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-white-muted)', paddingLeft: '24px' }}>Moderate issue activity in your area</span>
+                        <span className="text-[0.8rem] text-text-white-muted pl-6">Moderate issue activity in your area</span>
                     </div>
 
                     {/* Personal Summary */}
-                    <div style={{ padding: '0 0.5rem' }}>
-                        <h4 style={{ fontSize: '0.85rem', color: 'var(--text-white-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '12px', fontWeight: 600 }}>Your Activity</h4>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.9rem' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-white-soft)' }}>
+                    <div className="px-2">
+                        <h4 className="text-[0.85rem] text-text-white-muted uppercase tracking-[1px] mb-3 font-semibold">Your Activity</h4>
+                        <div className="flex flex-col gap-2.5 text-[0.9rem]">
+                            <div className="flex justify-between text-text-white-soft">
                                 <span>Complaints Reported:</span>
-                                <strong style={{ color: 'var(--text-white)' }}>{userTotalComplaints}</strong>
+                                <strong className="text-text-white">{userTotalComplaints}</strong>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-white-soft)' }}>
+                            <div className="flex justify-between text-text-white-soft">
                                 <span>Resolved:</span>
-                                <strong style={{ color: '#86efac' }}>{userResolvedCount}</strong>
+                                <strong className="text-[#86efac]">{userResolvedCount}</strong>
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-white-soft)' }}>
+                            <div className="flex justify-between text-text-white-soft">
                                 <span>Pending:</span>
-                                <strong style={{ color: '#fdba74' }}>{userPendingCount}</strong>
+                                <strong className="text-[#fdba74]">{userPendingCount}</strong>
                             </div>
                         </div>
                     </div>
 
                     {/* Primary Action */}
-                    <button className="btn-primary" onClick={() => setShowModal(true)} style={{ width: '100%', justifyContent: 'center', padding: '14px', borderRadius: '100px', margin: '0.5rem 0' }}>
+                    <button className="btn-primary w-full justify-center p-3.5 rounded-full my-2" onClick={() => setShowModal(true)}>
                         <Plus size={16} /> Report New Issue
                     </button>
 
                     {/* Recent Activity */}
                     {userIssues.length > 0 && (
-                        <div style={{ padding: '0 0.5rem', marginTop: 'auto' }}>
-                            <h4 style={{ fontSize: '0.85rem', color: 'var(--text-white-muted)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '12px', fontWeight: 600 }}>Recent Actions</h4>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <div className="px-2 mt-auto">
+                            <h4 className="text-[0.85rem] text-text-white-muted uppercase tracking-[1px] mb-3 font-semibold">Recent Actions</h4>
+                            <div className="flex flex-col gap-3">
                                 {userIssues.slice(0, 3).map((issue, idx) => (
-                                    <div key={issue.id || idx} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-                                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--text-white-muted)', marginTop: '6px', flexShrink: 0 }} />
-                                        <div style={{ fontSize: '0.85rem' }}>
-                                            <div style={{ color: 'var(--text-white)', fontWeight: 500, marginBottom: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '180px' }}>{issue.title}</div>
-                                            <div style={{ color: 'var(--text-white-muted)', fontSize: '0.75rem', textTransform: 'capitalize' }}>{issue.status.replace('_', ' ')} &middot; {issue.created_at ? new Date(issue.created_at).toLocaleDateString() : 'Recently'}</div>
+                                    <div key={issue.id || idx} className="flex gap-2.5 items-start">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-text-white-muted mt-1.5 shrink-0" />
+                                        <div className="text-[0.85rem]">
+                                            <div className="text-text-white font-medium mb-0.5 whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px]">{issue.title}</div>
+                                            <div className="text-text-white-muted text-[0.75rem] capitalize">{issue.status.replace('_', ' ')} &middot; {issue.created_at ? new Date(issue.created_at).toLocaleDateString() : 'Recently'}</div>
                                         </div>
                                     </div>
                                 ))}
@@ -137,7 +137,7 @@ const CitizenDashboard = () => {
                         <h3>Report Issues in Your Community</h3>
                         <p>Take photos, add descriptions, and track the progress of your complaints.</p>
                         <div className="action-buttons">
-                            <button className="btn-primary" onClick={() => setShowModal(true)} style={{ width: '100%', justifyContent: 'center', padding: '16px' }}>
+                            <button className="btn-primary w-full justify-center p-4" onClick={() => setShowModal(true)}>
                                 <Plus size={18} /> Add Complaint
                             </button>
                         </div>

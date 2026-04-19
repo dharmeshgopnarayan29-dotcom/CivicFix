@@ -51,15 +51,15 @@ const CitizenMapView = () => {
         <div className="dashboard-bg">
             <Navbar />
             <div className="container-wide">
-                <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+                <div className="page-header flex justify-between items-start mb-6">
                     <div>
-                        <h1 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-white)' }}>Map View</h1>
-                        <p className="subtitle" style={{ color: 'var(--text-white-muted)' }}>Geographic distribution of complaints in your area</p>
+                        <h1 className="text-[2rem] font-extrabold text-text-white">Map View</h1>
+                        <p className="subtitle text-text-white-muted">Geographic distribution of complaints in your area</p>
                     </div>
                     {userLocation && (
-                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.08)', padding: '10px 20px', borderRadius: '100px', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)', boxShadow: '0 8px 25px rgba(0,0,0,0.15)' }}>
+                        <div className="inline-flex items-center gap-2 bg-white/[0.08] py-2.5 px-5 rounded-full backdrop-blur-[10px] border border-white/20 shadow-[0_8px_25px_rgba(0,0,0,0.15)]">
                             <MapPin size={18} color="#86efac" />
-                            <span style={{ fontWeight: 600, color: 'var(--text-white)', fontSize: '0.95rem' }}>{userLocation.name}</span>
+                            <span className="font-semibold text-text-white text-[0.95rem]">{userLocation.name}</span>
                         </div>
                     )}
                 </div>

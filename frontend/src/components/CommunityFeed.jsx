@@ -64,11 +64,11 @@ const CommunityFeed = ({ issues, isAdmin = false, onStatusChange, emptyTitle, em
                                 />
                             )}
 
-                            <div className="complaint-card-footer" style={{ flexWrap: 'wrap' }}>
+                            <div className="complaint-card-footer flex-wrap">
                                 <span className="badge-category">{issue.category}</span>
                                 
                                 {isAdmin && onStatusChange && (
-                                    <div className="quick-action-row" style={{ marginTop: 0 }}>
+                                    <div className="quick-action-row !mt-0">
                                         {issue.status === 'pending' && (
                                             <>
                                                 <button className="quick-action-btn approve" onClick={() => onStatusChange(issue.id, 'verified')}>

@@ -98,7 +98,7 @@ const ReportIssueModal = ({ isOpen, onClose, onSubmit }) => {
                             <label>Description</label>
                             <textarea className="textarea-field" rows="3" placeholder="Describe the issue in detail..." value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} required />
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                        <div className="grid grid-cols-2 gap-4">
                             <div className="form-group">
                                 <label>Category</label>
                                 <select className="select-field" value={formData.category} onChange={e => setFormData({...formData, category: e.target.value})}>
@@ -111,18 +111,18 @@ const ReportIssueModal = ({ isOpen, onClose, onSubmit }) => {
                             </div>
                             <div className="form-group">
                                 <label>Photo (optional)</label>
-                                <input type="file" className="input-field" style={{ padding: '8px' }} accept="image/*" onChange={e => setPhoto(e.target.files[0])} />
+                                <input type="file" className="input-field p-2" accept="image/*" onChange={e => setPhoto(e.target.files[0])} />
                             </div>
                         </div>
                         <div className="form-group">
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                                <label style={{ margin: 0 }}>Pick Location</label>
+                            <div className="flex justify-between items-center mb-2">
+                                <label className="!m-0">Pick Location</label>
                                 <button type="button" onClick={handleGetLocation} className="btn-secondary btn-sm">
                                     <MapPin size={14} /> Use My Location
                                 </button>
                             </div>
-                            <div style={{ height: '200px', borderRadius: 'var(--radius-sm)', overflow: 'hidden', border: '1px solid var(--border)' }}>
-                                <MapContainer center={mapCenter} zoom={13} style={{ height: '100%' }}>
+                            <div className="h-[200px] rounded-custom-sm overflow-hidden border border-white/15">
+                                <MapContainer center={mapCenter} zoom={13} className="h-full">
                                     <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
                                     <MapUpdater mapCenter={mapCenter} />
                                     <LocationPicker position={position} setPosition={setPosition} />

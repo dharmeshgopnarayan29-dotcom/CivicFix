@@ -45,8 +45,8 @@ const Reports = () => {
         <div className="dashboard-bg">
             <Navbar />
             <div className="container-wide">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
-                    <div className="page-header" style={{ marginBottom: 0 }}>
+                <div className="flex justify-between items-start mb-6">
+                    <div className="page-header !mb-0">
                         <h1>Reports</h1>
                         <p className="subtitle">Generate and export reports</p>
                     </div>
@@ -56,7 +56,7 @@ const Reports = () => {
                 </div>
 
                 {/* Summary Table */}
-                <div className="table-container" style={{ marginBottom: '1.5rem' }}>
+                <div className="table-container mb-6">
                     <div className="table-header">
                         <h2>Summary Report</h2>
                     </div>
@@ -69,10 +69,10 @@ const Reports = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td style={{ fontWeight: 500 }}>Total Complaints</td><td>{total}</td><td>100%</td></tr>
-                            <tr><td style={{ fontWeight: 500 }}>Resolved</td><td style={{ color: '#22c55e', fontWeight: 600 }}>{resolved}</td><td>{total > 0 ? Math.round((resolved/total)*100) : 0}%</td></tr>
-                            <tr><td style={{ fontWeight: 500 }}>Pending</td><td style={{ color: '#f97316', fontWeight: 600 }}>{pending}</td><td>{total > 0 ? Math.round((pending/total)*100) : 0}%</td></tr>
-                            <tr><td style={{ fontWeight: 500 }}>In Progress</td><td style={{ color: '#3b82f6', fontWeight: 600 }}>{inProgress}</td><td>{total > 0 ? Math.round((inProgress/total)*100) : 0}%</td></tr>
+                            <tr><td className="font-medium">Total Complaints</td><td>{total}</td><td>100%</td></tr>
+                            <tr><td className="font-medium">Resolved</td><td className="text-green-500 font-semibold">{resolved}</td><td>{total > 0 ? Math.round((resolved/total)*100) : 0}%</td></tr>
+                            <tr><td className="font-medium">Pending</td><td className="text-orange-500 font-semibold">{pending}</td><td>{total > 0 ? Math.round((pending/total)*100) : 0}%</td></tr>
+                            <tr><td className="font-medium">In Progress</td><td className="text-blue-500 font-semibold">{inProgress}</td><td>{total > 0 ? Math.round((inProgress/total)*100) : 0}%</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -99,16 +99,16 @@ const Reports = () => {
                                 const rate = catIssues.length > 0 ? Math.round((catResolved / catIssues.length) * 100) : 0;
                                 return (
                                     <tr key={cat}>
-                                        <td style={{ textTransform: 'capitalize', fontWeight: 500 }}>{cat}</td>
+                                        <td className="capitalize font-medium">{cat}</td>
                                         <td>{catIssues.length}</td>
-                                        <td style={{ color: '#22c55e', fontWeight: 600 }}>{catResolved}</td>
-                                        <td style={{ color: '#f97316', fontWeight: 600 }}>{catPending}</td>
+                                        <td className="text-green-500 font-semibold">{catResolved}</td>
+                                        <td className="text-orange-500 font-semibold">{catPending}</td>
                                         <td>
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                <div style={{ flex: 1, height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
-                                                    <div style={{ height: '100%', width: `${rate}%`, background: '#22c55e', borderRadius: '3px' }} />
+                                            <div className="flex items-center gap-2">
+                                                <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-green-500 rounded-full" style={{ width: `${rate}%` }} />
                                                 </div>
-                                                <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>{rate}%</span>
+                                                <span className="text-[0.8rem] font-semibold">{rate}%</span>
                                             </div>
                                         </td>
                                     </tr>

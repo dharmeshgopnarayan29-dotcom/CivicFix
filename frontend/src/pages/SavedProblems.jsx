@@ -39,7 +39,7 @@ const SavedProblems = () => {
     return (
         <div className="dashboard-bg">
             <Navbar />
-            <div className="container" style={{ maxWidth: '900px' }}>
+            <div className="container max-w-[900px]">
                 <div className="page-header">
                     <h1>Saved Problems</h1>
                     <p className="subtitle">Issues you've bookmarked for follow-up</p>
@@ -52,11 +52,11 @@ const SavedProblems = () => {
                         <p>Bookmark issues from All Complaints to track them here</p>
                     </div>
                 ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div className="flex flex-col gap-4">
                         {savedIssues.map((issue, idx) => (
                             <div key={issue.id} className="complaint-card" style={{ animationDelay: `${idx * 0.05}s` }}>
                                 <div className="complaint-card-header">
-                                    <div className="avatar" style={{ background: 'rgba(255,255,255,0.06)', color: 'var(--text-white)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                                    <div className="avatar bg-white/5 text-text-white border border-white/15">
                                         {(issue.reporter_name || 'U').charAt(0).toUpperCase()}
                                     </div>
                                     <div className="complaint-card-info">
@@ -66,9 +66,9 @@ const SavedProblems = () => {
                                             <span>{issue.lat}, {issue.lng}</span>
                                         </div>
                                     </div>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <div className="flex items-center gap-2">
                                         <span className={`badge ${issue.status}`}>{issue.status.replace('_', ' ')}</span>
-                                        <button onClick={() => toggleSave(issue.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}>
+                                        <button onClick={() => toggleSave(issue.id)} className="bg-transparent border-none cursor-pointer p-1">
                                             <Bookmark size={18} fill="#f59e0b" color="#f59e0b" />
                                         </button>
                                     </div>
@@ -76,7 +76,7 @@ const SavedProblems = () => {
                                 <div className="complaint-card-desc">{issue.description}</div>
                                 <div className="complaint-card-footer">
                                     <span className="badge-category">{issue.category}</span>
-                                    <select className="select-field" style={{ width: '130px', padding: '6px 10px', fontSize: '0.8rem', marginTop: 0 }} value={issue.status} onChange={e => updateStatus(issue.id, e.target.value)}>
+                                    <select className="select-field w-[130px] py-1.5 px-2.5 text-[0.8rem] !mt-0" value={issue.status} onChange={e => updateStatus(issue.id, e.target.value)}>
                                         <option value="pending">Pending</option>
                                         <option value="verified">Verified</option>
                                         <option value="in_progress">In Progress</option>
@@ -91,17 +91,17 @@ const SavedProblems = () => {
 
                 {/* Show all issues to bookmark */}
                 {savedIssues.length < issues.length && (
-                    <div style={{ marginTop: '2rem' }}>
-                        <h3 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--text-light)' }}>All Issues — Click bookmark to save</h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    <div className="mt-8">
+                        <h3 className="text-[1.1rem] font-semibold mb-4 text-text-white-soft">All Issues — Click bookmark to save</h3>
+                        <div className="flex flex-col gap-3">
                             {issues.filter(i => !saved.includes(i.id)).map(issue => (
-                                <div key={issue.id} className="glass-card" style={{ padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div key={issue.id} className="glass-card p-4 flex justify-between items-center">
                                     <div>
-                                        <div style={{ fontWeight: 500 }}>{issue.title}</div>
-                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>{issue.category} • {issue.status.replace('_', ' ')}</div>
+                                        <div className="font-medium">{issue.title}</div>
+                                        <div className="text-[0.8rem] text-text-white-muted mt-0.5">{issue.category} • {issue.status.replace('_', ' ')}</div>
                                     </div>
-                                    <button onClick={() => toggleSave(issue.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '6px' }}>
-                                        <Bookmark size={18} color="var(--text-muted)" />
+                                    <button onClick={() => toggleSave(issue.id)} className="bg-transparent border-none cursor-pointer p-1.5">
+                                        <Bookmark size={18} color="var(--text-white-muted)" />
                                     </button>
                                 </div>
                             ))}

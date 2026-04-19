@@ -41,7 +41,7 @@ const MyComplaints = () => {
     return (
         <div className="dashboard-bg">
             <Navbar />
-            <div className="container" style={{ maxWidth: '900px' }}>
+            <div className="container max-w-[900px]">
                 <div className="page-header">
                     <h1>My Complaints</h1>
                     <p className="subtitle">Track all your reported issues</p>
@@ -60,7 +60,7 @@ const MyComplaints = () => {
                     ))}
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div className="flex flex-col gap-4">
                     {filteredIssues.length === 0 ? (
                         <div className="empty-state">
                             <FileText size={48} />
@@ -71,7 +71,7 @@ const MyComplaints = () => {
                         filteredIssues.map((issue, idx) => (
                             <div key={issue.id} className="complaint-card" style={{ animationDelay: `${idx * 0.05}s` }}>
                                 <div className="complaint-card-header">
-                                    <div className="avatar" style={{ background: 'rgba(255,255,255,0.06)', color: 'var(--text-white)', border: '1px solid rgba(255,255,255,0.15)' }}>
+                                    <div className="avatar bg-white/5 text-text-white border border-white/15">
                                         {(issue.reporter_name || 'U').charAt(0).toUpperCase()}
                                     </div>
                                     <div className="complaint-card-info">
