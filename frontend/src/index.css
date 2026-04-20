@@ -52,6 +52,11 @@
     min-height: 100vh;
     min-height: 100dvh;
     background-color: var(--color-base-1);
+    background-image: url('/Background4.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     position: relative;
   }
 

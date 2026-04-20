@@ -26,7 +26,7 @@ export default function AuthPage() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await api.post('user/register/', signupData);
+      await api.post('users/register/', signupData);
       alert("Registration Successful. Please Login...");
       setIsFlipped(false);
       setSignupData({ username: "", email: "", password: "", role: "citizen" });

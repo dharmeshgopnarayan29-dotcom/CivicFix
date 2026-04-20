@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
                 if (decoded.exp * 1000 < Date.now()) {
                     logout();
                 } else {
-                    setUser({ email: decoded.email, role: decoded.role });
+                    setUser({ username: decoded.username, email: decoded.email, role: decoded.role });
                 }
             } catch (err) {
                 logout();
@@ -25,12 +25,12 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    const login = async (email, password) => {
-        const res = await api.post('users/login/', { email, password });
+    const login = async (username, password) => {
+        const res = await api.post('users/login/', { username, password });
         localStorage.setItem('access_token', res.data.access);
         localStorage.setItem('refresh_token', res.data.refresh);
         const decoded = jwtDecode(res.data.access);
-        setUser({ email: decoded.email, role: decoded.role });
+        setUser({ username: decoded.username, email: decoded.email, role: decoded.role });
         return decoded.role;
     };
 
