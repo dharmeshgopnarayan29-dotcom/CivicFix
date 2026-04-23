@@ -118,12 +118,7 @@ const MapView = ({ issues, isAdmin = false, onStatusChange, userLocation }) => {
                             ))}
                         </MapContainer>
 
-                        {/* Floating CTA */}
-                        {!isAdmin && (
-                            <button className="btn-primary absolute bottom-6 left-1/2 -translate-x-1/2 z-[500] py-3 px-6 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
-                                <Plus size={18} /> Report Issue Near Me
-                            </button>
-                        )}
+
 
                         {/* Priority Legend */}
                         <div className="priority-legend absolute bottom-5 left-5 z-[400] bg-slate-100/90 rounded-[16px] p-4 border border-slate-200 shadow-md backdrop-blur-sm">

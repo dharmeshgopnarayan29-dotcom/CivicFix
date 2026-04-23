@@ -58,10 +58,18 @@ class IssueSerializer(serializers.ModelSerializer):
         lat = data.get('lat')
         lng = data.get('lng')
 
+        # For partial updates (PATCH), we only validate location if it's being provided
+        # or if the existing instance also doesn't have it.
         has_coords = lat is not None and lng is not None
         has_address = bool(address)
 
-        # At least one location source must be provided
+        # Check existing instance if it's an update
+        if self.instance:
+            if not has_coords:
+                has_coords = self.instance.lat is not None and self.instance.lng is not None
+            if not has_address:
+                has_address = bool(self.instance.address)
+
         if not has_coords and not has_address:
             raise serializers.ValidationError(
                 "Please provide an address, use your current location, or select a location on the map."

@@ -101,10 +101,7 @@ const CitizenDashboard = () => {
                         </div>
                     </div>
 
-                    {/* Primary Action */}
-                    <button className="btn-primary w-full justify-center p-3.5 rounded-full my-2" onClick={() => setShowModal(true)}>
-                        <Plus size={16} /> Report New Issue
-                    </button>
+
 
                     {/* Recent Activity */}
                     {userIssues.length > 0 && (

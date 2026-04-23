@@ -99,7 +99,11 @@ const MyComplaints = () => {
                                 </div>
                                 <div className="complaint-card-desc">{issue.description}</div>
                                 {issue.photo && (
-                                    <img src={`http://localhost:8000${issue.photo}`} alt={issue.title} className="complaint-card-photo" />
+                                    <img 
+                                        src={issue.photo.startsWith('http') ? issue.photo : `http://localhost:8000${issue.photo}`} 
+                                        alt={issue.title} 
+                                        className="complaint-card-photo" 
+                                    />
                                 )}
                             </div>
                         ))
