@@ -14,12 +14,23 @@ api.interceptors.request.use((config) => {
 
 export const getMediaUrl = (photoPath) => {
     if (!photoPath) return '';
-    if (photoPath.startsWith('http')) return photoPath;
+    
+    // Auto-upgrade http to https on secure sites (prevents Mixed Content errors)
+    if (photoPath.startsWith('http')) {
+        if (window.location.protocol === 'https:' && photoPath.startsWith('http:')) {
+            return photoPath.replace('http:', 'https:');
+        }
+        return photoPath;
+    }
     
     let baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/';
     baseUrl = baseUrl.replace(/\/api\/?$/, '');
     baseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-    const path = photoPath.startsWith('/') ? photoPath : `/${photoPath}`;
+    
+    let path = photoPath.startsWith('/') ? photoPath : `/${photoPath}`;
+    if (!path.startsWith('/media/')) {
+        path = `/media${path}`;
+    }
     
     return `${baseUrl}${path}`;
 };
