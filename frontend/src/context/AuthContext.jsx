@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
 import api from '../api';
 
 export const AuthContext = createContext();
@@ -8,35 +7,41 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    // On mount (page refresh), try to re-hydrate user from the cookie session
     useEffect(() => {
-        const token = localStorage.getItem('access_token');
-        if (token) {
+        const rehydrate = async () => {
             try {
-                const decoded = jwtDecode(token);
-                if (decoded.exp * 1000 < Date.now()) {
-                    logout();
-                } else {
-                    setUser({ id: decoded.user_id, username: decoded.username, email: decoded.email, role: decoded.role });
-                }
+                const res = await api.get('users/me/');
+                setUser(res.data);
             } catch (err) {
-                logout();
+                // Cookie absent or expired — user is not logged in
+                setUser(null);
+            } finally {
+                setLoading(false);
             }
-        }
-        setLoading(false);
+        };
+        rehydrate();
     }, []);
 
     const login = async (username, password) => {
+        // Backend sets HttpOnly cookies; body returns { role, username, email }
         const res = await api.post('users/login/', { username, password });
-        localStorage.setItem('access_token', res.data.access);
-        localStorage.setItem('refresh_token', res.data.refresh);
-        const decoded = jwtDecode(res.data.access);
-        setUser({ id: decoded.user_id, username: decoded.username, email: decoded.email, role: decoded.role });
-        return decoded.role;
+        const userData = {
+            role: res.data.role,
+            username: res.data.username,
+            email: res.data.email,
+        };
+        setUser(userData);
+        return userData.role;
     };
 
-    const logout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
+    const logout = async () => {
+        try {
+            await api.post('users/logout/');
+        } catch (err) {
+            // Even if the request fails, clear state locally
+            console.error('Logout request failed', err);
+        }
         setUser(null);
     };
 

@@ -1,12 +1,14 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 
 from .models import Issue, Comment, Upvote, Flag, TimelineEvent
 from .serializers import IssueSerializer, CommentSerializer, TimelineEventSerializer
+from .email_utils import send_status_update_email
 
 
 class UserIssueListView(generics.ListAPIView):
@@ -20,7 +22,8 @@ class UserIssueListView(generics.ListAPIView):
 class IssueListCreateView(generics.ListCreateAPIView):
     serializer_class = IssueSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    search_fields = ['title', 'description']
     filterset_fields = ['category', 'status', 'reported_by']
     ordering_fields = ['created_at']
 
@@ -78,6 +81,9 @@ class IssueDetailView(generics.RetrieveUpdateAPIView):
                     note=note,
                     department=issue.assigned_department or '',
                 )
+
+            # Send email notification to the citizen (Change 1)
+            send_status_update_email(issue)
 
 
 class AnalyticsView(APIView):
@@ -253,3 +259,13 @@ class TimelineAddNoteView(APIView):
             issue.save(update_fields=['assigned_department'])
 
         return Response(TimelineEventSerializer(event).data, status=status.HTTP_201_CREATED)
+
+
+# ── Public issue view (no auth required) ──
+
+class PublicIssueDetailView(generics.RetrieveAPIView):
+    """Read-only, unauthenticated view for a single non-flagged issue."""
+    queryset = Issue.objects.filter(is_flagged=False)
+    serializer_class = IssueSerializer
+    permission_classes = [AllowAny]
+    lookup_field = 'pk'

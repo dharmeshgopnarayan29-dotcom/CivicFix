@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import StatsBar from '../components/StatsBar';
 import CommunityFeed from '../components/CommunityFeed';
 import ReportIssueModal from '../components/ReportIssueModal';
+import BadgeShowcase from '../components/BadgeShowcase';
 import api from '../api';
 import { Camera, Plus, FileText, TrendingUp, Eye, MapPin, Download, Search, X } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
@@ -16,16 +17,28 @@ const CitizenDashboard = () => {
     const [locationQuery, setLocationQuery] = useState('');
     const [activeLocationFilter, setActiveLocationFilter] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => { 
         fetchIssues(); 
         fetchUserIssues();
     }, []);
 
-    const fetchIssues = async (location = '') => {
+    // Debounced search — re-fetch when searchQuery changes
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            fetchIssues(activeLocationFilter, searchQuery);
+        }, 400);
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
+
+    const fetchIssues = async (location = '', search = '') => {
         try {
-            const params = location ? `?location=${encodeURIComponent(location)}` : '';
-            const res = await api.get(`issues/${params}`);
+            const params = new URLSearchParams();
+            if (location) params.set('location', location);
+            if (search) params.set('search', search);
+            const queryStr = params.toString() ? `?${params.toString()}` : '';
+            const res = await api.get(`issues/${queryStr}`);
             setIssues(res.data);
         } catch (err) { console.error('Failed to fetch issues', err); }
     };
@@ -42,7 +55,7 @@ const CitizenDashboard = () => {
         try {
             await api.post('issues/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
             setShowModal(false);
-            fetchIssues(activeLocationFilter);
+            fetchIssues(activeLocationFilter, searchQuery);
             fetchUserIssues();
         } catch (err) {
             let errorMsg = 'Failed to report issue.';
@@ -62,17 +75,17 @@ const CitizenDashboard = () => {
     const handleLocationSearch = (e) => {
         e.preventDefault();
         setActiveLocationFilter(locationQuery.trim());
-        fetchIssues(locationQuery.trim());
+        fetchIssues(locationQuery.trim(), searchQuery);
     };
 
     const handleClearLocation = () => {
         setLocationQuery('');
         setActiveLocationFilter('');
-        fetchIssues('');
+        fetchIssues('', searchQuery);
     };
 
     const handleRefresh = () => {
-        fetchIssues(activeLocationFilter);
+        fetchIssues(activeLocationFilter, searchQuery);
         fetchUserIssues();
     };
 
@@ -136,7 +149,10 @@ const CitizenDashboard = () => {
                         </div>
                     </div>
 
-
+                    {/* Badges */}
+                    <div className="px-2">
+                        <BadgeShowcase compact={true} limit={6} showLocked={false} />
+                    </div>
 
                     {/* Recent Activity */}
                     {userIssues.length > 0 && (
@@ -159,6 +175,18 @@ const CitizenDashboard = () => {
 
                 {/* CENTER: Main Feed */}
                 <div className="center-content">
+                        {/* Keyword Search Bar */}
+                    <div className="relative mb-3">
+                        <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                        <input
+                            type="text"
+                            placeholder="Search issues by keyword..."
+                            value={searchQuery}
+                            onChange={e => setSearchQuery(e.target.value)}
+                            className="w-full py-2.5 pl-10 pr-4 bg-white border border-gray-200 rounded-2xl text-[0.9rem] text-black placeholder:text-gray-400 font-medium outline-none focus:border-black transition-colors"
+                        />
+                    </div>
+
                     {/* Location Search Bar */}
                     <form onSubmit={handleLocationSearch} className="location-search-bar">
                         <Search size={16} className="text-gray-400 shrink-0" />

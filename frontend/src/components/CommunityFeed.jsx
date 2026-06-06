@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { MapPin, Camera, Check, X, Play, CheckCircle, ChevronLeft, ChevronRight, ThumbsUp, Flag, MessageCircle, Send, Trash2 } from 'lucide-react';
+import { MapPin, Camera, Check, X, Play, CheckCircle, ChevronLeft, ChevronRight, ThumbsUp, Flag, MessageCircle, Send, Trash2, ImageIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import api, { getMediaUrl } from '../api';
 import { MiniTimeline } from './ProgressTimeline';
 import LoadingSpinner from './LoadingSpinner';
@@ -235,7 +236,7 @@ const CommunityFeed = ({ issues, isAdmin = false, onStatusChange, onRefresh, onD
                                         {(issue.reporter_name || 'U').charAt(0).toUpperCase()}
                                     </div>
                                     <div className="complaint-card-info">
-                                        <h3>{issue.title}</h3>
+                                        <h3><Link to={`/issues/${issue.id}`} className="text-inherit no-underline hover:underline">{issue.title}</Link></h3>
                                         <div className="complaint-card-meta">
                                             by {issue.reporter_name || 'Unknown'} • {getTimeAgo(issue.created_at)}
                                         </div>
@@ -300,6 +301,12 @@ const CommunityFeed = ({ issues, isAdmin = false, onStatusChange, onRefresh, onD
                                         <span className={`badge ${getCategoryPillColor(issue.category)}`}>
                                             {issue.category}
                                         </span>
+
+                                        {issue.status === 'resolved' && issue.resolution_photo_url && (
+                                            <span className="flex items-center gap-1 text-[0.75rem] font-bold text-green-700 bg-green-50 border border-green-200 py-0.5 px-2 rounded-full">
+                                                <CheckCircle size={12} /> Resolved with photo
+                                            </span>
+                                        )}
 
                                         <button
                                             className={`action-icon-btn ${issue.has_upvoted ? 'active' : ''}`}

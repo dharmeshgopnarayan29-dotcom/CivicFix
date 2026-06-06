@@ -3,6 +3,7 @@ import { AuthProvider, AuthContext } from './context/AuthContext';
 import { useContext } from 'react';
 
 import AuthPage from './pages/Login_Signup';
+import PublicIssuePage from './pages/PublicIssuePage';
 
 // Citizen pages
 import CitizenDashboard from './pages/CitizenDashboard';
@@ -42,6 +43,9 @@ function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<AuthPage />} />
           <Route path="/signup" element={<AuthPage />} />
+
+          {/* Public route — no login required */}
+          <Route path="/issues/:id" element={<PublicIssuePage />} />
 
           {/* Citizen Routes */}
           <Route path="/dashboard" element={<ProtectedRoute allowedRole="citizen"><CitizenDashboard /></ProtectedRoute>} />

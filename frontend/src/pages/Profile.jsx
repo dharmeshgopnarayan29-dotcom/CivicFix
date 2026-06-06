@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import Navbar from '../components/Navbar';
+import BadgeShowcase from '../components/BadgeShowcase';
 import { AuthContext } from '../context/AuthContext';
 import { User, Mail, Shield, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -51,6 +52,11 @@ const Profile = () => {
                     <button className="btn-primary mt-8 w-full" onClick={handleLogout}>
                         <LogOut size={16} /> Sign Out
                     </button>
+                </div>
+
+                {/* Badge Showcase — Full View */}
+                <div className="glass !p-6 mt-6 bg-white border-gray-200">
+                    <BadgeShowcase showLocked={true} />
                 </div>
             </div>
         </div>

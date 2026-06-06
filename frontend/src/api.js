@@ -1,15 +1,22 @@
 import axios from 'axios';
 
+/**
+ * Authenticated API client.
+ * Uses withCredentials so the browser automatically sends HttpOnly
+ * JWT cookies — no tokens are stored in JS/localStorage.
+ */
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api/',
+    withCredentials: true,
 });
 
-api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
+/**
+ * Public API client for unauthenticated endpoints (e.g. /issues/public/).
+ * Does NOT send cookies — avoids CORS preflight issues for public pages.
+ */
+export const publicApi = axios.create({
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api/',
+    withCredentials: false,
 });
 
 export const getMediaUrl = (photoPath) => {

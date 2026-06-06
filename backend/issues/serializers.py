@@ -72,6 +72,7 @@ class IssueSerializer(serializers.ModelSerializer):
     has_flagged = serializers.SerializerMethodField()
     timeline = serializers.SerializerMethodField()
     photo_url = serializers.SerializerMethodField()
+    resolution_photo_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Issue
@@ -105,6 +106,20 @@ class IssueSerializer(serializers.ModelSerializer):
             return None
         try:
             url = obj.photo.url
+            if url and not url.startswith('http'):
+                request = self.context.get('request')
+                if request:
+                    return request.build_absolute_uri(url)
+            return url
+        except Exception:
+            return None
+
+    def get_resolution_photo_url(self, obj):
+        """Return the full absolute URL for the resolution photo (Cloudinary or local media)."""
+        if not obj.resolution_photo:
+            return None
+        try:
+            url = obj.resolution_photo.url
             if url and not url.startswith('http'):
                 request = self.context.get('request')
                 if request:

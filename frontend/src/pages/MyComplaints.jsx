@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import Navbar from '../components/Navbar';
 import api, { getMediaUrl } from '../api';
 import { AuthContext } from '../context/AuthContext';
-import { FileText, MapPin, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
+import { FileText, MapPin, ChevronDown, ChevronUp, Trash2, ImageIcon } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import ProgressTimeline, { MiniTimeline } from '../components/ProgressTimeline';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -111,7 +112,7 @@ const MyComplaints = () => {
                                         {(issue.reporter_name || 'U').charAt(0).toUpperCase()}
                                     </div>
                                     <div className="complaint-card-info">
-                                        <h3>{issue.title}</h3>
+                                        <h3><Link to={`/issues/${issue.id}`} className="text-inherit no-underline hover:underline">{issue.title}</Link></h3>
                                         <div className="complaint-card-meta">
                                             {getTimeAgo(issue.created_at)} • {issue.category}
                                         </div>
@@ -138,6 +139,18 @@ const MyComplaints = () => {
                                         alt={issue.title}
                                         className="complaint-card-photo"
                                     />
+                                )}
+                                {issue.resolution_photo_url && (
+                                    <div className="mt-2">
+                                        <div className="flex items-center gap-1.5 text-xs font-bold text-green-700 mb-1.5">
+                                            <ImageIcon size={14} /> Resolution Photo
+                                        </div>
+                                        <img
+                                            src={issue.resolution_photo_url}
+                                            alt="Resolution"
+                                            className="complaint-card-photo !border-green-200"
+                                        />
+                                    </div>
                                 )}
 
                                 {/* Confirmation Row */}

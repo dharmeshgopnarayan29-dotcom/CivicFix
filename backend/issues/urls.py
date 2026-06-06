@@ -3,12 +3,13 @@ from .views import (
     IssueListCreateView, IssueDetailView, AnalyticsView, UserIssueListView,
     CommentListCreateView, UpvoteToggleView, FlagToggleView,
     FlaggedIssueListView, RestoreIssueView, IssueDeleteView,
-    TimelineListView, TimelineAddNoteView,
+    TimelineListView, TimelineAddNoteView, PublicIssueDetailView,
 )
 
 urlpatterns = [
     path('my/', UserIssueListView.as_view(), name='my-issues'),
     path('', IssueListCreateView.as_view(), name='issue-list-create'),
+    path('public/<int:pk>/', PublicIssueDetailView.as_view(), name='public-issue-detail'),
     path('flagged/', FlaggedIssueListView.as_view(), name='flagged-issues'),
     path('analytics/', AnalyticsView.as_view(), name='analytics'),
     path('<int:pk>/', IssueDetailView.as_view(), name='issue-detail'),

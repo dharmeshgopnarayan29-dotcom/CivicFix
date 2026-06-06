@@ -4,7 +4,7 @@ import CommunityFeed from '../components/CommunityFeed';
 import api from '../api';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { AlertTriangle, Clock, Users, CheckCircle2, ArrowUpRight, Minus, Filter, MapPin } from 'lucide-react';
+import { AlertTriangle, Clock, Users, CheckCircle2, ArrowUpRight, Minus, Filter, MapPin, Search, Upload } from 'lucide-react';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -56,6 +56,8 @@ const AdminDashboard = () => {
     const [geoError, setGeoError] = useState('');
     const [loading, setLoading] = useState(true);
     const [updatingId, setUpdatingId] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [resolutionPhoto, setResolutionPhoto] = useState(null);
 
     useEffect(() => {
         if ('geolocation' in navigator) {
@@ -73,10 +75,19 @@ const AdminDashboard = () => {
 
     useEffect(() => { fetchData(); }, []);
 
-    const fetchData = async () => {
+    // Debounced search
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            fetchData(searchQuery);
+        }, 400);
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
+
+    const fetchData = async (search = '') => {
         setLoading(true);
         try {
-            const res = await api.get('issues/');
+            const params = search ? `?search=${encodeURIComponent(search)}` : '';
+            const res = await api.get(`issues/${params}`);
             setIssues(res.data);
         } catch (err) {
             console.error('Failed to fetch issues', err);
@@ -85,12 +96,20 @@ const AdminDashboard = () => {
         }
     };
 
-    const updateStatus = async (id, status) => {
+    const updateStatus = async (id, status, resPhoto = null) => {
         setUpdatingId(id);
         try {
-            await api.patch(`issues/${id}/`, { status });
-            fetchData();
+            if (status === 'resolved' && resPhoto) {
+                const formData = new FormData();
+                formData.append('status', status);
+                formData.append('resolution_photo', resPhoto);
+                await api.patch(`issues/${id}/`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+            } else {
+                await api.patch(`issues/${id}/`, { status });
+            }
+            fetchData(searchQuery);
             if (selectedIssueId === id) setSelectedIssueId(null);
+            setResolutionPhoto(null);
         } catch (err) {
             alert('Status update failed');
         } finally {
@@ -159,8 +178,21 @@ const AdminDashboard = () => {
                             ))}
                         </div>
 
-                        {/* Filter Panel */}
-                        <div className="glass !p-4 !rounded-[18px] flex items-center justify-between gap-4 flex-wrap bg-white border-gray-200">
+                        {/* Search + Filter Panel */}
+                        <div className="glass !p-4 !rounded-[18px] flex flex-col gap-3 bg-white border-gray-200">
+                            {/* Search Input */}
+                            <div className="relative">
+                                <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                <input
+                                    type="text"
+                                    placeholder="Search issues by keyword..."
+                                    value={searchQuery}
+                                    onChange={e => setSearchQuery(e.target.value)}
+                                    className="w-full py-2.5 pl-10 pr-4 bg-gray-50 border border-gray-200 rounded-xl text-[0.85rem] text-black placeholder:text-gray-400 font-medium outline-none focus:border-black transition-colors"
+                                />
+                            </div>
+                            {/* Filter Row */}
+                            <div className="flex items-center justify-between gap-4 flex-wrap">
                             <div className="flex items-center gap-3 flex-wrap">
                                 <div className="flex items-center gap-2 text-black font-semibold text-[0.9rem]">
                                     <Filter size={16} /> Filter Issues
@@ -188,6 +220,7 @@ const AdminDashboard = () => {
                                     </button>
                                 </div>
                             )}
+                            </div>
                         </div>
 
                         {/* Complaint Feed */}
@@ -297,9 +330,21 @@ const AdminDashboard = () => {
                                                 </button>
                                             )}
                                             {selectedIssue.status === 'in_progress' && (
-                                                <button className={`btn-primary p-2.5 text-[0.85rem] justify-center ${updatingId === selectedIssue.id ? 'btn-loading' : ''}`} disabled={updatingId === selectedIssue.id} onClick={() => updateStatus(selectedIssue.id, 'resolved')}>
-                                                    {updatingId === selectedIssue.id ? <><LoadingSpinner size={16} color="white" /> Resolving...</> : 'Mark Resolved'}
-                                                </button>
+                                                <div className="flex flex-col gap-2">
+                                                    <label className="flex items-center gap-2 py-2 px-3 rounded-xl bg-gray-50 border border-gray-200 text-[0.8rem] text-gray-600 font-medium cursor-pointer hover:bg-gray-100 transition-colors">
+                                                        <Upload size={14} />
+                                                        <span>{resolutionPhoto ? resolutionPhoto.name : 'Attach resolution photo (optional)'}</span>
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            className="hidden"
+                                                            onChange={e => setResolutionPhoto(e.target.files[0] || null)}
+                                                        />
+                                                    </label>
+                                                    <button className={`btn-primary p-2.5 text-[0.85rem] justify-center ${updatingId === selectedIssue.id ? 'btn-loading' : ''}`} disabled={updatingId === selectedIssue.id} onClick={() => updateStatus(selectedIssue.id, 'resolved', resolutionPhoto)}>
+                                                        {updatingId === selectedIssue.id ? <><LoadingSpinner size={16} color="white" /> Resolving...</> : 'Mark Resolved'}
+                                                    </button>
+                                                </div>
                                             )}
                                             <button className="btn-secondary p-2.5 text-[0.85rem] justify-center" onClick={() => setSelectedIssueId(null)}>Close Details</button>
                                         </div>

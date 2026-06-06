@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import api from '../api';
-import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, Upload } from 'lucide-react';
 import BorderGlow from '../components/BorderGlow';
 import { MiniTimeline } from '../components/ProgressTimeline';
 
@@ -11,31 +11,49 @@ const AllComplaints = () => {
     const [search, setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const ITEMS_PER_PAGE = 10;
+    const [resolutionPhotos, setResolutionPhotos] = useState({});
 
     useEffect(() => { fetchData(); }, []);
 
-    // Reset page to 1 when filters or search change
+    // Debounced search — calls API
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            fetchData(search);
+        }, 400);
+        return () => clearTimeout(timer);
+    }, [search]);
+
+    // Reset page to 1 when filters change
     useEffect(() => {
         setCurrentPage(1);
-    }, [filter, search, issues.length]);
+    }, [filter, issues.length]);
 
-    const fetchData = async () => {
+    const fetchData = async (searchVal = '') => {
         try {
-            const res = await api.get('issues/');
+            const params = searchVal ? `?search=${encodeURIComponent(searchVal)}` : '';
+            const res = await api.get(`issues/${params}`);
             setIssues(res.data);
         } catch (err) { console.error(err); }
     };
 
     const updateStatus = async (id, status) => {
         try {
-            await api.patch(`issues/${id}/`, { status });
-            fetchData();
+            const resPhoto = resolutionPhotos[id];
+            if (status === 'resolved' && resPhoto) {
+                const formData = new FormData();
+                formData.append('status', status);
+                formData.append('resolution_photo', resPhoto);
+                await api.patch(`issues/${id}/`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+            } else {
+                await api.patch(`issues/${id}/`, { status });
+            }
+            setResolutionPhotos(prev => { const next = { ...prev }; delete next[id]; return next; });
+            fetchData(search);
         } catch (err) { alert('Status update failed'); }
     };
 
     const filtered = issues
         .filter(i => filter === 'all' || i.status === filter)
-        .filter(i => i.title.toLowerCase().includes(search.toLowerCase()) || i.reporter_name?.toLowerCase().includes(search.toLowerCase()))
         .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
     const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
@@ -106,13 +124,27 @@ const AllComplaints = () => {
                                         </td>
                                         <td><span className={`badge ${iss.status}`}>{iss.status.replace('_', ' ')}</span></td>
                                         <td>
-                                            <select className="select-field w-[130px] py-1.5 px-2.5 text-[0.8rem]" value={iss.status} onChange={e => updateStatus(iss.id, e.target.value)}>
-                                                <option value="pending">Pending</option>
-                                                <option value="verified">Verified</option>
-                                                <option value="in_progress">In Progress</option>
-                                                <option value="resolved">Resolved</option>
-                                                <option value="rejected">Rejected</option>
-                                            </select>
+                                            <div className="flex flex-col gap-1.5">
+                                                <select className="select-field w-[130px] py-1.5 px-2.5 text-[0.8rem]" value={iss.status} onChange={e => updateStatus(iss.id, e.target.value)}>
+                                                    <option value="pending">Pending</option>
+                                                    <option value="verified">Verified</option>
+                                                    <option value="in_progress">In Progress</option>
+                                                    <option value="resolved">Resolved</option>
+                                                    <option value="rejected">Rejected</option>
+                                                </select>
+                                                {iss.status === 'in_progress' && (
+                                                    <label className="flex items-center gap-1.5 py-1 px-2 rounded-lg bg-gray-50 border border-gray-200 text-[0.7rem] text-gray-500 font-medium cursor-pointer hover:bg-gray-100 transition-colors">
+                                                        <Upload size={12} />
+                                                        <span className="truncate max-w-[90px]">{resolutionPhotos[iss.id]?.name || 'Attach photo'}</span>
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            className="hidden"
+                                                            onChange={e => setResolutionPhotos(prev => ({ ...prev, [iss.id]: e.target.files[0] || null }))}
+                                                        />
+                                                    </label>
+                                                )}
+                                            </div>
                                         </td>
                                     </tr>
                                 ))

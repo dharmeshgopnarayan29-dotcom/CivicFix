@@ -28,6 +28,7 @@ class Issue(models.Model):
     assigned_department = models.CharField(max_length=100, blank=True, null=True)
     reported_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reported_issues')
     is_flagged = models.BooleanField(default=False)
+    resolution_photo = models.ImageField(upload_to='resolutions/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
